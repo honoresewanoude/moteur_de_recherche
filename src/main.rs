@@ -1,10 +1,22 @@
-fn main() {
+use std::fs;
+
 
     //fonction pour découper le texte
     
     fn read_txt() {
 
-        let texte = "Rust est un langage rapide. Rust permet de créer des logiciels fiables !";
+        let contenu =  fs::read_to_string("/home/msh-cyber/Documents_texte/document1.txt");
+
+        let texte = match contenu {
+            Ok(t) => {
+                println!("Lecture avec succès\n\n");
+                t
+            } 
+            Err(erreur) => {
+                println!("Erreur de lecture {}", erreur);
+                return;
+            }
+        };
 
         let sans_pontuation : String = texte.chars().filter(|c| !c.is_ascii_punctuation()).collect();
 
@@ -15,6 +27,7 @@ fn main() {
                 }
     }
 
+fn main() {
     read_txt();
 
 }
