@@ -1,4 +1,6 @@
+use std::collections::HashMap;
 use std::fs;
+//use std::collections;
 
 
     //fonction pour découper le texte
@@ -27,7 +29,32 @@ use std::fs;
                 }
     }
 
+    /**fn vecteur (){
+        let mut index: HashMap<String , Vec<usize>> = HashMap::new();
+        index.insert("rust".to_string(), vec![1,2]);
+        index.insert("rapide".to_string(), vec![1,3]);
+        println!("{:?}",index["rapide"]);
+    }**/
+
+
+
+    fn ajouter_document(index: &mut HashMap<String , Vec<usize>>, mot : &str, id : usize){
+        let document = index.entry(mot.to_string()).or_insert_with(Vec::new);
+        if !document.contains(&id){document.push(id);}
+    }
+
+
+
 fn main() {
     read_txt();
+    //vecteur();
+
+    let mut index: HashMap<String, Vec<usize>> = HashMap::new();
+    ajouter_document(&mut index, "rust", 3);
+    ajouter_document(&mut index, "rapide", 4);
+    ajouter_document(&mut index, "rust", 8);
+    ajouter_document(&mut index, "logiciel", 3);
+
+    println!("{:?}",index);
 
 }
