@@ -1,5 +1,6 @@
 use std::collections::HashMap;
 use std::fs;
+use std::io;
 //use std::collections;
 
 
@@ -11,7 +12,7 @@ use std::fs;
 
         let texte = match contenu {
             Ok(t) => {
-                //println!("Lecture avec succès\n\n");
+                
                 t
             } 
             Err(erreur) => {
@@ -29,13 +30,6 @@ use std::fs;
                 
     }
 
-    /**fn vecteur (){
-        let mut index: HashMap<String , Vec<usize>> = HashMap::new();
-        index.insert("rust".to_string(), vec![1,2]);
-        index.insert("rapide".to_string(), vec![1,3]);
-        println!("{:?}",index["rapide"]);
-    }**/
-
     //Fonction pour ajouter clé / valeur 
 
     fn ajouter_document(index: &mut HashMap<String , Vec<usize>>, mot : &str, id : usize){
@@ -46,13 +40,20 @@ use std::fs;
 
 
 fn main() {
+
+    let mut mot_user  = String::new();
+
+    println!("Veuillez entrer un mot : ");
+    io::stdin().read_line(&mut mot_user).expect("echec de la lecture");
+
+    let mot_user = mot_user.trim().to_lowercase();
     
     //vecteur();
 
     let mut index: HashMap<String, Vec<usize>> = HashMap::new();
 
-    let document = vec![(1,"/home/msh-cyber/Documents_texte/document1.txt".to_string()),
-                                          (2,"/home/msh-cyber/Documents_texte/document1.txt".to_string()),];
+    let document = vec![(1,"/home/msh-cyber/Documents_texte/document1.txt"),
+                                          (2,"/home/msh-cyber/Documents_texte/document2.txt"),];
     
    
 
@@ -64,11 +65,10 @@ fn main() {
 
     }
     
-    //println!("{:?}",index);
 
-    let  mot_recher = "rust";
 
-    if let Some(id) = index.get(mot_recher){
+
+    if let Some(id) = index.get(&mot_user){
         println!("{:?}",id);
     }else{
         println!("Le mot n'existe pas");
