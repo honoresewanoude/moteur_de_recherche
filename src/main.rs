@@ -5,18 +5,18 @@ use std::fs;
 
     //fonction pour découper le texte
     
-    fn read_txt() {
+    fn read_txt(chemin :&str) -> Vec<String> {
 
-        let contenu =  fs::read_to_string("/home/msh-cyber/Documents_texte/document1.txt");
+        let contenu =  fs::read_to_string(chemin);
 
         let texte = match contenu {
             Ok(t) => {
-                println!("Lecture avec succès\n\n");
+                //println!("Lecture avec succès\n\n");
                 t
             } 
             Err(erreur) => {
                 println!("Erreur de lecture {}", erreur);
-                return;
+                return Vec::new()
             }
         };
 
@@ -24,9 +24,9 @@ use std::fs;
 
         let mot_miniscules = sans_pontuation.to_lowercase();
 
-        for mot in mot_miniscules.split_whitespace(){
-            println!("{}",mot);
-                }
+        let mot: Vec<String> =  mot_miniscules.split_whitespace().map(|mot| mot.to_string()).collect();
+        mot
+                
     }
 
     /**fn vecteur (){
@@ -36,7 +36,7 @@ use std::fs;
         println!("{:?}",index["rapide"]);
     }**/
 
-
+    //Fonction pour ajouter clé / valeur 
 
     fn ajouter_document(index: &mut HashMap<String , Vec<usize>>, mot : &str, id : usize){
         let document = index.entry(mot.to_string()).or_insert_with(Vec::new);
@@ -46,15 +46,35 @@ use std::fs;
 
 
 fn main() {
-    read_txt();
+    
     //vecteur();
 
     let mut index: HashMap<String, Vec<usize>> = HashMap::new();
-    ajouter_document(&mut index, "rust", 3);
-    ajouter_document(&mut index, "rapide", 4);
-    ajouter_document(&mut index, "rust", 8);
-    ajouter_document(&mut index, "logiciel", 3);
 
-    println!("{:?}",index);
+    let document = vec![(1,"/home/msh-cyber/Documents_texte/document1.txt".to_string()),
+                                          (2,"/home/msh-cyber/Documents_texte/document1.txt".to_string()),];
+    
+   
+
+    for (id,chemin) in &document{
+         let resss = read_txt(&chemin);
+          for mot in resss {
+            ajouter_document(&mut index, &mot, *id);
+            }
+
+    }
+    
+    //println!("{:?}",index);
+
+    let  mot_recher = "rust";
+
+    if let Some(id) = index.get(mot_recher){
+        println!("{:?}",id);
+    }else{
+        println!("Le mot n'existe pas");
+    }
 
 }
+
+
+
